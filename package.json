@@ -1,0 +1,53 @@
+{
+  "name": "Roam-API",
+  "version": "0.1.0",
+  "description": "Roam's API",
+  "main": "src/index.ts",
+  "repository": "https://github.com/Roam-gg/Roam-API.git",
+  "author": "Yui Yukihira <yuiyukihira@pm.me>",
+  "license": "GPL-3.0",
+  "private": false,
+  "scripts": {
+    "start": "npm run serve",
+    "build": "npm run build-ts && npm run lint",
+    "serve": "node dist/index.js",
+    "watch-node": "nodemon dist/index.js",
+    "watch": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"cyan.bold,green.bold\" \"npm run watch-ts\" \"npm run watch-node\"",
+    "test": "jest --forceExit --coverage --verbose",
+    "watch-test": "npm run test -- --watchAll",
+    "build-ts": "tsc",
+    "watch-ts": "tsc -w",
+    "lint": "tsc --noEmit && eslint \"**/*.{js,ts}\" --quiet --fix",
+    "debug": "npm run build && npm run watch-debug",
+    "serve-debug": "nodemon --inspect dist/index.js",
+    "watch-debug": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"cyan.bold,green.bold\" \"npm run watch-ts\" \"npm run serve-debug\""
+  },
+  "devDependencies": {
+    "@types/graphql": "^14.5.0",
+    "@types/lodash": "^4.14.149",
+    "@types/mongoose": "^5.7.1",
+    "@types/node": "^13.7.0",
+    "@types/orientjs": "^3.0.10",
+    "@types/passport": "^1.0.2",
+    "@typescript-eslint/eslint-plugin": "^2.19.0",
+    "@typescript-eslint/parser": "^2.19.0",
+    "chai": "^4.2.0",
+    "concurrently": "^5.1.0",
+    "eslint": "^6.8.0",
+    "graphql": "^14.6.0",
+    "mocha": "^7.0.1",
+    "nodemon": "^2.0.2",
+    "passport": "^0.4.1",
+    "reflect-metadata": "^0.1.13",
+    "type-graphql": "^0.17.6",
+    "typescript": "^3.7.5"
+  },
+  "dependencies": {
+    "@typegoose/typegoose": "^6.3.2",
+    "apollo-server": "^2.10.0",
+    "lodash": "^4.17.15",
+    "mongodb": "^3.5.2",
+    "mongoose": "^5.8.11",
+    "typedi": "^0.8.0"
+  }
+}

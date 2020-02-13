@@ -22,6 +22,12 @@
     "serve-debug": "nodemon --inspect dist/index.js",
     "watch-debug": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"cyan.bold,green.bold\" \"npm run watch-ts\" \"npm run serve-debug\""
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn run lint",
+      "pre-push": "yarn run test"
+    }
+  },
   "devDependencies": {
     "@types/graphql": "^14.5.0",
     "@types/lodash": "^4.14.149",
@@ -35,6 +41,7 @@
     "concurrently": "^5.1.0",
     "eslint": "^6.8.0",
     "graphql": "^14.6.0",
+    "husky": "^4.2.3",
     "mocha": "^7.0.1",
     "nodemon": "^2.0.2",
     "passport": "^0.4.1",

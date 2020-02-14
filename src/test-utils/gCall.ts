@@ -1,4 +1,4 @@
-import { graphql, GraphQLSchema } from "graphql"
+import { graphql, GraphQLSchema } from "graphql";
 import Maybe from "graphql/tsutils/Maybe";
 import { buildSchema } from "type-graphql";
 
@@ -21,4 +21,4 @@ export const gCall = async ({source, variableValues}: Options) => {
         source,
         variableValues
     });
-}
+};

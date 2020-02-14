@@ -14,7 +14,7 @@ export class Role {
     name: string
 
     @Field()
-    @Property({required: true, default: '#FFFFFF'})
+    @Property({required: true, default: "#FFFFFF"})
     colour: string
 
     @Field(type => Int)

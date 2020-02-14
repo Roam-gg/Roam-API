@@ -1,15 +1,15 @@
-import { mongoose } from "@typegoose/typegoose"
+import { mongoose } from "@typegoose/typegoose";
 import { graphql, ExecutionResult } from "graphql";
 import { gCall } from "../test-utils/gCall";
-import faker from 'faker';
+import faker from "faker";
 import { TheaterModel } from "../../src/models/Theater";
 import { ChannelModel } from "../../src/models/Channel";
 import { ExecutionResultDataDefault } from "graphql/execution/execute";
 
 beforeAll(async () => {
-    await mongoose.connect("mongodb://localhost:27017/test", {useNewUrlParser: true});
-    await TheaterModel.remove({});
-    await ChannelModel.remove({});
+    await mongoose.connect("mongodb://localhost:27017/test", {useNewUrlParser: true, useUnifiedTopology: true});
+    await TheaterModel.deleteMany({});
+    await ChannelModel.deleteMany({});
 });
 
 afterAll(async () => {
@@ -51,9 +51,9 @@ query Theater($id: String!) {
         }
     }
 }
-`
+`;
 
-describe('Theater', () => {
+describe("Theater", () => {
     const theater = {
         name: faker.lorem.word(),
         channels: [{name: faker.lorem.word()}],
@@ -81,8 +81,8 @@ describe('Theater', () => {
         });
     });
     it("get theater", async () => {
-        console.log(response.data.theaterCreate.id)
-        let resp = await gCall({
+        console.log(response.data.theaterCreate.id);
+        const resp = await gCall({
             source: theaterQuery,
             variableValues: {id: response.data.theaterCreate.id}
         });
@@ -96,6 +96,6 @@ describe('Theater', () => {
                     roles: theater.roles
                 }
             }
-        })
+        });
     });
-})
+});

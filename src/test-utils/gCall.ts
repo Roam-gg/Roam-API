@@ -13,7 +13,8 @@ let schema: GraphQLSchema;
 export const gCall = async ({source, variableValues}: Options) => {
     if (!schema) {
         schema = await buildSchema({
-            resolvers: [__dirname + "/../resolvers/*.{ts,js}"]
+            resolvers: [__dirname + "/../resolvers/*.{ts,js}"],
+            validate: false
         });
     }
     return graphql({

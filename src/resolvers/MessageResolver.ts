@@ -13,10 +13,9 @@ export default class MessageResolver {
     @Mutation(returns => Message)
     async messageCreate(
         @PubSub("MESSAGE_CREATE") publish: Publisher<DocumentType<Message>>,
-        @Arg("comment") newComment: MessageInput): Promise<DocumentType<Message>> {
-        const message = new MessageModel({id: this.getID(), ...newComment});
+        @Arg("data") newMessage: MessageInput): Promise<DocumentType<Message>> {
+        const message = new MessageModel({id: this.getID(), ...newMessage});
         const m = await message.save();
-        console.log(m);
         await publish(m);
         return m;
     }
@@ -28,7 +27,6 @@ export default class MessageResolver {
 
     @Subscription(returns => Message, {topics: "MESSAGE_CREATE"})
     messageCreateSubscription(@Root() message: DocumentType<Message>) {
-        console.log(message);
         return message;
     }
 

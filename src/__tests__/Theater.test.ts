@@ -5,11 +5,10 @@ import faker from "faker";
 import { TheaterModel } from "../../src/models/Theater";
 import { ChannelModel } from "../../src/models/Channel";
 import { ExecutionResultDataDefault } from "graphql/execution/execute";
+import { MessageModel } from "../models/Message";
 
 beforeAll(async () => {
-    await mongoose.connect("mongodb://localhost:27017/test", {useNewUrlParser: true, useUnifiedTopology: true});
-    await TheaterModel.deleteMany({});
-    await ChannelModel.deleteMany({});
+    await mongoose.connect("mongodb://localhost:27017/theater_test", {useNewUrlParser: true, useUnifiedTopology: true});
 });
 
 afterAll(async () => {
@@ -54,6 +53,11 @@ query Theater($id: String!) {
 `;
 
 describe("Theater", () => {
+    beforeAll(async () => {
+        await TheaterModel.deleteMany({});
+        await ChannelModel.deleteMany({});
+        await MessageModel.deleteMany({});
+    });
     const theater = {
         name: faker.lorem.word(),
         channels: [{name: faker.lorem.word()}],
@@ -81,12 +85,10 @@ describe("Theater", () => {
         });
     });
     it("get theater", async () => {
-        console.log(response.data.theaterCreate.id);
         const resp = await gCall({
             source: theaterQuery,
             variableValues: {id: response.data.theaterCreate.id}
         });
-        console.log(resp);
         expect(resp).toMatchObject({
             data: {
                 theater: {

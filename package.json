@@ -24,7 +24,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "yarn run lint",
+      "pre-commit": "tsc --noEmit && eslint \"**/*.{js,ts}\" --fix",
       "pre-push": "yarn run test"
     }
   },

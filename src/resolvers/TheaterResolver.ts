@@ -12,7 +12,7 @@ export default class TheaterResolver {
 
     @Query(returns => Theater, {nullable: true})
     async theater(@Arg("id") id: string): Promise<DocumentType<Theater>> {
-        return await TheaterModel.findOne({id: id});
+        return await TheaterModel.findOne({_id: id});
     }
 
     @FieldResolver(returns => [Channel])
@@ -21,12 +21,11 @@ export default class TheaterResolver {
         const ret = await ChannelModel.find({
             "_id": { $in: theater.channels}
         });
-        console.log(ret);
         return ret;
     }
 
     @Mutation(returns => Theater)
-    async theaterCreate(@Arg("theater") theaterInput: TheaterInput): Promise<DocumentType<Theater>> {
+    async theaterCreate(@Arg("data") theaterInput: TheaterInput): Promise<DocumentType<Theater>> {
         const channels: DocumentType<Channel>[] = [];
         for (const channelInput of theaterInput.channels) {
             const channel = new ChannelModel({id: `urn:1:${this.newID()}`, name: channelInput.name});
@@ -37,10 +36,7 @@ export default class TheaterResolver {
         for (const roleInput of theaterInput.roles) {
             roles.push({id: `urn:1:${this.newID()}`, ...roleInput});
         }
-        console.log(channels);
-        console.log(roles);
         const theater = new TheaterModel({id: `urn:1:${this.newID()}`, name: theaterInput.name, channels: channels, roles: roles});
-        console.log(theater);
         return await theater.save();
     }
 

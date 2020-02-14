@@ -6,8 +6,8 @@ export class RoleInput {
     @Field()
     name: string;
 
-    @Field(type => Int, {nullable: true})
-    colour: number;
+    @Field({nullable: true})
+    colour: string;
 
     @Field(type => Int)
     permissions: number;

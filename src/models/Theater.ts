@@ -28,6 +28,10 @@ export class Theater {
     @Field(type => [Flair])
     @arrayProp({type: Flair})
     flairs!: Flair[];
+
+    @Field()
+    @Property()
+    banner: string;
 }
 
 

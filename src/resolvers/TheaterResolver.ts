@@ -5,6 +5,7 @@ import { ChannelModel, Channel } from "../models/Channel";
 import { DocumentType } from "@typegoose/typegoose";
 import { Role } from "../models/Role";
 import { Family, FamilyModel } from "../models/Family";
+import { Flair } from "../models/Flair";
 
 @Resolver(of => Theater)
 export default class TheaterResolver {
@@ -40,7 +41,11 @@ export default class TheaterResolver {
         for (const roleInput of theaterInput.roles) {
             roles.push({id: `urn:1:${this.newID()}`, ...roleInput});
         }
-        const theater = new TheaterModel({id: `urn:1:${this.newID()}`, name: theaterInput.name, channels: channels, roles: roles, families: []});
+        const flairs: Partial<Flair>[] = [];
+        for (const flairInput of theaterInput.flairs) {
+            flairs.push({id: `urn:1:${this.newID()}`, ...flairInput});
+        }
+        const theater = new TheaterModel({id: `urn:1:${this.newID()}`, name: theaterInput.name, channels, roles, flairs, families: []});
         return await theater.save();
     }
 

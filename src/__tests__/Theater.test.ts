@@ -32,6 +32,13 @@ mutation CreateTheater($data: TheaterInput!) {
             permissions
             mentionable
         }
+
+        flairs {
+            id
+            name
+            colour
+        }
+
         families {
             id
             name
@@ -54,6 +61,13 @@ query Theater($id: String!) {
             permissions
             mentionable
         }
+
+        flairs {
+            id
+            name
+            colour
+        }
+
         families {
             id
             name
@@ -76,6 +90,10 @@ describe("Theater", () => {
             colour: faker.internet.color(),
             permissions: faker.random.number(),
             mentionable: faker.random.boolean()
+        }],
+        flairs: [{
+            name: faker.lorem.word(),
+            colour: faker.internet.color()
         }]
     };
     let response: ExecutionResult<ExecutionResultDataDefault>;
@@ -107,6 +125,7 @@ describe("Theater", () => {
                     name: theater.name,
                     channels: theater.channels,
                     roles: theater.roles,
+                    flairs: theater.flairs,
                     families: []
                 }
             }

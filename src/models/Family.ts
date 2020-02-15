@@ -10,14 +10,14 @@ export class Family{
     readonly id: string;
 
     @Property({alias: "id"})
-    readonly_id: string;
+    readonly _id: string;
 
     @Field()
     @Property({ required: true, minlength: 2, maxlength: 100 })
     name!: string;
 
     @Field(type => [Theater])
-    @Property({ref: Theater})
+    @arrayProp({type: String, ref: "Theater"})
     theaters: Ref<Theater>[];
 
     @Field(type => [Role])

@@ -1,16 +1,16 @@
 import { InputType, Field } from "type-graphql";
-import { ChannelInput } from "./ChannelInput";
 import { RoleInput } from "./RoleInput";
+import { ChannelInput } from "./ChannelInput";
 
 
 @InputType()
-export class TheaterInput {
+export class FamilyInput {
     @Field()
     name: string;
 
-    @Field(type => [ChannelInput])
-    channels: ChannelInput[];
-
     @Field(type => [RoleInput])
     roles: RoleInput[];
+
+    @Field(type => [ChannelInput])
+    channels: ChannelInput[];
 }

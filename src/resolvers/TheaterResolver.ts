@@ -9,7 +9,7 @@ import { Flair } from "../models/Flair";
 
 @Resolver(of => Theater)
 export default class TheaterResolver {
-    private id_count: number = 0;
+    private id_count = 0;
 
     @Query(returns => Theater, {nullable: true})
     async theater(@Arg("id") id: string): Promise<DocumentType<Theater>> {
@@ -41,7 +41,7 @@ export default class TheaterResolver {
         for (const flairInput of theaterInput.flairs) {
             flairs.push({id: `urn:1:${this.newID()}`, ...flairInput});
         }
-        const theater = new TheaterModel({id: `urn:1:${this.newID()}`, name: theaterInput.name, channels, roles, flairs});
+        const theater = new TheaterModel({id: `urn:1:${this.newID()}`, name: theaterInput.name, channels, roles, flairs, banner: theaterInput.banner});
         return await theater.save();
     }
 

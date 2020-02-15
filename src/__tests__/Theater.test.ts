@@ -36,6 +36,7 @@ mutation CreateTheater($data: TheaterInput!) {
             name
             colour
         }
+        banner
     }
 }
 `;
@@ -58,6 +59,7 @@ query Theater($id: String!) {
             name
             colour
         }
+        banner
     }
 }
 `;
@@ -80,7 +82,8 @@ describe("Theater", () => {
         flairs: [{
             name: faker.lorem.word(),
             colour: faker.internet.color()
-        }]
+        }],
+        banner: faker.random.alphaNumeric(10)
     };
     let response: ExecutionResult<ExecutionResultDataDefault>;
     it("create theater", async () => {
@@ -93,7 +96,8 @@ describe("Theater", () => {
                 theaterCreate: {
                     name: theater.name,
                     channels: theater.channels,
-                    roles: theater.roles
+                    roles: theater.roles,
+                    banner: theater.banner
                 }
             }
         });
@@ -110,7 +114,8 @@ describe("Theater", () => {
                     name: theater.name,
                     channels: theater.channels,
                     roles: theater.roles,
-                    flairs: theater.flairs
+                    flairs: theater.flairs,
+                    banner: theater.banner
                 }
             }
         });

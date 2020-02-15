@@ -23,6 +23,10 @@ export class Theater {
     @Field(type => [Role])
     @arrayProp({type: Role})
     roles!: Role[];
+    
+    @Field(type => [Channel])
+    @arrayProp({type: String, ref: Channel})
+    shared_channels: Ref<Channel>[];
 }
 
 

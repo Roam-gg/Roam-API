@@ -23,6 +23,10 @@ export class Theater {
     @Field(type => [Role])
     @arrayProp({type: Role})
     roles!: Role[];
+
+    @Field(Type => [Role])
+    @arrayProp({type: Role})
+    shared_roles: Role[];
 }
 
 

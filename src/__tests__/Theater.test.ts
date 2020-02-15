@@ -32,6 +32,10 @@ mutation CreateTheater($data: TheaterInput!) {
             permissions
             mentionable
         }
+        families {
+            id
+            name
+        }
     }
 }
 `;
@@ -41,13 +45,18 @@ query Theater($id: String!) {
     theater(id: $id) {
         id name
         channels {
-            id name
+            id
+            name
         }
         roles {
             id name
             colour
             permissions
             mentionable
+        }
+        families {
+            id
+            name
         }
     }
 }
@@ -80,7 +89,8 @@ describe("Theater", () => {
                 theaterCreate: {
                     name: theater.name,
                     channels: theater.channels,
-                    roles: theater.roles
+                    roles: theater.roles,
+                    families: []
                 }
             }
         });
@@ -96,7 +106,8 @@ describe("Theater", () => {
                     id: response.data.theaterCreate.id,
                     name: theater.name,
                     channels: theater.channels,
-                    roles: theater.roles
+                    roles: theater.roles,
+                    families: []
                 }
             }
         });

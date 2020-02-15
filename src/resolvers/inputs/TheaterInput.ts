@@ -1,5 +1,4 @@
 import { InputType, Field } from "type-graphql";
-import { Theater } from "../../models/Theater";
 import { ChannelInput } from "./ChannelInput";
 import { RoleInput } from "./RoleInput";
 import { FlairInput } from "./FlairInput";
@@ -18,6 +17,9 @@ export class TheaterInput {
 
     @Field(type => [FlairInput])
     flairs: FlairInput[];
+
+    @Field({nullable: true})
+    icon: string;
 
     @Field({ nullable: true })
     banner: string;

@@ -6,6 +6,7 @@ import { TheaterModel } from "../../src/models/Theater";
 import { ChannelModel } from "../../src/models/Channel";
 import { ExecutionResultDataDefault } from "graphql/execution/execute";
 import { MessageModel } from "../models/Message";
+import { TheaterInput } from "../resolvers/inputs/TheaterInput";
 
 beforeAll(async () => {
     await mongoose.connect("mongodb://localhost:27017/theater_test", {useNewUrlParser: true, useUnifiedTopology: true});
@@ -31,12 +32,18 @@ mutation CreateTheater($data: TheaterInput!) {
             permissions
             mentionable
         }
+
         flairs {
             id
             name
             colour
         }
+        icon
         banner
+        families {
+            id
+            name
+        }
     }
 }
 `;
@@ -44,9 +51,11 @@ mutation CreateTheater($data: TheaterInput!) {
 const theaterQuery = `
 query Theater($id: String!) {
     theater(id: $id) {
-        id name
+        id 
+        name
         channels {
-            id name
+            id
+            name
         }
         roles {
             id name
@@ -54,12 +63,18 @@ query Theater($id: String!) {
             permissions
             mentionable
         }
+
         flairs {
             id
             name
             colour
         }
+        icon
         banner
+        families {
+            id
+            name
+        }
     }
 }
 `;
@@ -70,7 +85,7 @@ describe("Theater", () => {
         await ChannelModel.deleteMany({});
         await MessageModel.deleteMany({});
     });
-    const theater = {
+    const theater: TheaterInput = {
         name: faker.lorem.word(),
         channels: [{name: faker.lorem.word()}],
         roles: [{
@@ -83,6 +98,7 @@ describe("Theater", () => {
             name: faker.lorem.word(),
             colour: faker.internet.color()
         }],
+        icon: faker.random.alphaNumeric(10),
         banner: faker.random.alphaNumeric(10)
     };
     let response: ExecutionResult<ExecutionResultDataDefault>;
@@ -97,7 +113,10 @@ describe("Theater", () => {
                     name: theater.name,
                     channels: theater.channels,
                     roles: theater.roles,
-                    banner: theater.banner
+                    flairs: theater.flairs,
+                    icon: theater.icon,
+                    banner: theater.banner,
+                    families: []
                 }
             }
         });
@@ -115,7 +134,9 @@ describe("Theater", () => {
                     channels: theater.channels,
                     roles: theater.roles,
                     flairs: theater.flairs,
-                    banner: theater.banner
+                    icon: theater.icon,
+                    banner: theater.banner,
+                    families: []
                 }
             }
         });

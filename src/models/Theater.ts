@@ -31,7 +31,7 @@ export class Theater {
 
     @Field()
     @Property()
-    icon: string[];
+    icon: string;
 }
 
 

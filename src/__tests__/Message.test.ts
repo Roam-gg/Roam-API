@@ -66,6 +66,7 @@ describe("Test messages", () => {
     });
 
     it("Create Message", async () => {
+        console.log(theater);
         const messageContent = faker.lorem.words();
         const message = await gCall({
             source: messageCreateMutation,

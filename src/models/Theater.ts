@@ -29,9 +29,9 @@ export class Theater {
     @arrayProp({type: Flair})
     flairs!: Flair[];
 
-    @Field()
+    @Field({nullable: true})
     @Property()
-    icon: string;
+    icon?: string;
 }
 
 

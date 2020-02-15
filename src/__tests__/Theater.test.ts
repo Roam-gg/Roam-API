@@ -31,6 +31,11 @@ mutation CreateTheater($data: TheaterInput!) {
             permissions
             mentionable
         }
+        flairs {
+            id
+            name
+            colour
+        }
     }
 }
 `;
@@ -47,6 +52,11 @@ query Theater($id: String!) {
             colour
             permissions
             mentionable
+        }
+        flairs {
+            id
+            name
+            colour
         }
     }
 }
@@ -66,6 +76,10 @@ describe("Theater", () => {
             colour: faker.internet.color(),
             permissions: faker.random.number(),
             mentionable: faker.random.boolean()
+        }],
+        flairs: [{
+            name: faker.lorem.word(),
+            colour: faker.internet.color()
         }]
     };
     let response: ExecutionResult<ExecutionResultDataDefault>;
@@ -95,7 +109,8 @@ describe("Theater", () => {
                     id: response.data.theaterCreate.id,
                     name: theater.name,
                     channels: theater.channels,
-                    roles: theater.roles
+                    roles: theater.roles,
+                    flairs: theater.flairs
                 }
             }
         });

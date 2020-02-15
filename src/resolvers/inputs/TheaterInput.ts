@@ -20,4 +20,7 @@ export class TheaterInput {
 
     @Field({nullable: true})
     icon: string;
+
+    @Field({ nullable: true })
+    banner: string;
 }

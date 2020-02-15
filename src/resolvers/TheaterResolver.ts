@@ -45,7 +45,7 @@ export default class TheaterResolver {
         for (const flairInput of theaterInput.flairs) {
             flairs.push({id: `urn:1:${this.newID()}`, ...flairInput});
         }
-        const theater = new TheaterModel({id: `urn:1:${this.newID()}`, name: theaterInput.name, channels, roles, flairs, icon: theaterInput.icon, families: []});
+        const theater = new TheaterModel({id: `urn:1:${this.newID()}`, name: theaterInput.name, channels, roles, flairs, icon: theaterInput.icon, banner: theaterInput.banner, families: []});
         return await theater.save();
     }
 

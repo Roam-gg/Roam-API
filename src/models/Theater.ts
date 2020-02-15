@@ -34,6 +34,10 @@ export class Theater {
     @Property()
     icon?: string;
 
+    @Field({ nullable: true })
+    @Property()
+    banner?: string;
+
     @Field(type => [Family])
     @arrayProp({type: String, ref: Family})
     families!: Ref<Family>[];

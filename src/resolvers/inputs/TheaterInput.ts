@@ -1,5 +1,4 @@
 import { InputType, Field } from "type-graphql";
-import { Theater } from "../../models/Theater";
 import { ChannelInput } from "./ChannelInput";
 import { RoleInput } from "./RoleInput";
 import { FlairInput } from "./FlairInput";

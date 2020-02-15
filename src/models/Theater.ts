@@ -2,6 +2,7 @@ import {prop as Property, Ref, arrayProp, getModelForClass} from "@typegoose/typ
 import {Channel} from "./Channel";
 import { ObjectType, Field } from "type-graphql";
 import { Role } from "./Role";
+import { Family } from "./Family";
 import { Flair } from "./Flair";
 
 @ObjectType()
@@ -32,6 +33,10 @@ export class Theater {
     @Field({nullable: true})
     @Property()
     icon?: string;
+
+    @Field(type => [Family])
+    @arrayProp({type: String, ref: Family})
+    families!: Ref<Family>[];
 }
 
 

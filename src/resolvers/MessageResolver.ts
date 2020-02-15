@@ -8,7 +8,7 @@ import { ChannelModel } from "../models/Channel";
 
 @Resolver(of => Message)
 export default class MessageResolver {
-    private id_count: number = 1000;
+    private id_count = 1000;
 
     @Mutation(returns => Message)
     async messageCreate(

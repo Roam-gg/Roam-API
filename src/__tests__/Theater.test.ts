@@ -6,6 +6,7 @@ import { TheaterModel } from "../../src/models/Theater";
 import { ChannelModel } from "../../src/models/Channel";
 import { ExecutionResultDataDefault } from "graphql/execution/execute";
 import { MessageModel } from "../models/Message";
+import { TheaterInput } from "../resolvers/inputs/TheaterInput";
 
 beforeAll(async () => {
     await mongoose.connect("mongodb://localhost:27017/theater_test", {useNewUrlParser: true, useUnifiedTopology: true});
@@ -31,10 +32,16 @@ mutation CreateTheater($data: TheaterInput!) {
             permissions
             mentionable
         }
+
         flairs {
             id
             name
             colour
+        }
+
+        families {
+            id
+            name
         }
     }
 }
@@ -45,7 +52,8 @@ query Theater($id: String!) {
     theater(id: $id) {
         id name
         channels {
-            id name
+            id
+            name
         }
         roles {
             id name
@@ -53,10 +61,16 @@ query Theater($id: String!) {
             permissions
             mentionable
         }
+
         flairs {
             id
             name
             colour
+        }
+
+        families {
+            id
+            name
         }
     }
 }
@@ -68,7 +82,7 @@ describe("Theater", () => {
         await ChannelModel.deleteMany({});
         await MessageModel.deleteMany({});
     });
-    const theater = {
+    const theater: TheaterInput = {
         name: faker.lorem.word(),
         channels: [{name: faker.lorem.word()}],
         roles: [{
@@ -93,7 +107,8 @@ describe("Theater", () => {
                 theaterCreate: {
                     name: theater.name,
                     channels: theater.channels,
-                    roles: theater.roles
+                    roles: theater.roles,
+                    families: []
                 }
             }
         });
@@ -110,7 +125,8 @@ describe("Theater", () => {
                     name: theater.name,
                     channels: theater.channels,
                     roles: theater.roles,
-                    flairs: theater.flairs
+                    flairs: theater.flairs,
+                    families: []
                 }
             }
         });

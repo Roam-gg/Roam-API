@@ -30,6 +30,10 @@ export class Theater {
     @arrayProp({type: Flair})
     flairs!: Flair[];
 
+    @Field({nullable: true})
+    @Property()
+    icon?: string;
+
     @Field(type => [Family])
     @arrayProp({type: String, ref: Family})
     families!: Ref<Family>[];

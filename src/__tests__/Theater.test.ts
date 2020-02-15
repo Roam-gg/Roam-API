@@ -38,7 +38,7 @@ mutation CreateTheater($data: TheaterInput!) {
             name
             colour
         }
-
+        icon
         families {
             id
             name
@@ -50,7 +50,8 @@ mutation CreateTheater($data: TheaterInput!) {
 const theaterQuery = `
 query Theater($id: String!) {
     theater(id: $id) {
-        id name
+        id 
+        name
         channels {
             id
             name
@@ -67,7 +68,7 @@ query Theater($id: String!) {
             name
             colour
         }
-
+        icon
         families {
             id
             name
@@ -94,7 +95,8 @@ describe("Theater", () => {
         flairs: [{
             name: faker.lorem.word(),
             colour: faker.internet.color()
-        }]
+        }],
+        icon: faker.random.alphaNumeric(10)
     };
     let response: ExecutionResult<ExecutionResultDataDefault>;
     it("create theater", async () => {
@@ -108,6 +110,8 @@ describe("Theater", () => {
                     name: theater.name,
                     channels: theater.channels,
                     roles: theater.roles,
+                    flairs: theater.flairs,
+                    icon: theater.icon,
                     families: []
                 }
             }
@@ -126,6 +130,7 @@ describe("Theater", () => {
                     channels: theater.channels,
                     roles: theater.roles,
                     flairs: theater.flairs,
+                    icon: theater.icon,
                     families: []
                 }
             }

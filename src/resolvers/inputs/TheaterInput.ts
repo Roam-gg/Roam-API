@@ -17,4 +17,7 @@ export class TheaterInput {
 
     @Field(type => [FlairInput])
     flairs: FlairInput[];
+
+    @Field({nullable: true})
+    icon: string;
 }

@@ -6,6 +6,7 @@ import { TheaterModel } from "../../src/models/Theater";
 import { ChannelModel } from "../../src/models/Channel";
 import { ExecutionResultDataDefault } from "graphql/execution/execute";
 import { MessageModel } from "../models/Message";
+import { TheaterInput } from "../resolvers/inputs/TheaterInput";
 import {Container} from "typedi";
 
 beforeAll(async () => {
@@ -34,6 +35,27 @@ mutation CreateTheater($data: TheaterInput!) {
             permissions
             mentionable
         }
+
+        flairs {
+            id
+            name
+            colour
+        }
+        icon
+        banner
+        families {
+            id
+            name
+        }
+        emojis {
+            id
+            name
+            animated
+            requireColons
+            roles {
+                id name
+            }
+        }
     }
 }
 `;
@@ -41,15 +63,38 @@ mutation CreateTheater($data: TheaterInput!) {
 const theaterQuery = `
 query Theater($id: String!) {
     theater(id: $id) {
-        id name
+        id 
+        name
         channels {
-            id name
+            id
+            name
         }
         roles {
             id name
             colour
             permissions
             mentionable
+        }
+        flairs {
+            id
+            name
+            colour
+        }
+        icon
+        banner
+        families {
+            id
+            name
+        }
+        emojis {
+            id
+            name
+            requireColons
+            animated
+            roles {
+                id
+                name
+            }
         }
     }
 }
@@ -61,7 +106,7 @@ describe("Theater", () => {
         await ChannelModel.deleteMany({});
         await MessageModel.deleteMany({});
     });
-    const theater = {
+    const theater: TheaterInput = {
         name: faker.lorem.word(),
         channels: [{name: faker.lorem.word()}],
         roles: [{
@@ -69,6 +114,17 @@ describe("Theater", () => {
             colour: faker.internet.color(),
             permissions: faker.random.number(),
             mentionable: faker.random.boolean()
+        }],
+        flairs: [{
+            name: faker.lorem.word(),
+            colour: faker.internet.color()
+        }],
+        icon: faker.random.alphaNumeric(10),
+        banner: faker.random.alphaNumeric(10),
+        emojis: [{
+            name: faker.lorem.word(),
+            requireColons: faker.random.boolean(),
+            animated: faker.random.boolean()
         }]
     };
     let response: ExecutionResult<ExecutionResultDataDefault>;
@@ -82,7 +138,12 @@ describe("Theater", () => {
                 theaterCreate: {
                     name: theater.name,
                     channels: theater.channels,
-                    roles: theater.roles
+                    roles: theater.roles,
+                    flairs: theater.flairs,
+                    icon: theater.icon,
+                    banner: theater.banner,
+                    families: [],
+                    emojis: theater.emojis
                 }
             }
         });
@@ -98,7 +159,12 @@ describe("Theater", () => {
                     id: response.data.theaterCreate.id,
                     name: theater.name,
                     channels: theater.channels,
-                    roles: theater.roles
+                    roles: theater.roles,
+                    flairs: theater.flairs,
+                    icon: theater.icon,
+                    banner: theater.banner,
+                    families: [],
+                    emojis: theater.emojis
                 }
             }
         });

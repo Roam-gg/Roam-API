@@ -62,7 +62,9 @@ describe("Test messages", () => {
             variableValues: {data: {
                 name: faker.lorem.word(),
                 channels: [{name: faker.lorem.word()}],
-                roles: []
+                roles: [],
+                flairs: [],
+                emojis: []
             }}
         });
     });

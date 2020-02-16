@@ -4,6 +4,7 @@ import { ObjectType, Field } from "type-graphql";
 import { Role } from "./Role";
 import { Family } from "./Family";
 import { Flair } from "./Flair";
+import { Emoji } from "./Emoji";
 
 @ObjectType()
 export class Theater {
@@ -41,6 +42,10 @@ export class Theater {
     @Field(type => [Family])
     @arrayProp({type: String, ref: Family})
     families!: Ref<Family>[];
+
+    @Field(type => [Emoji])
+    @arrayProp({type: Emoji})
+    emojis: Emoji[];
 }
 
 

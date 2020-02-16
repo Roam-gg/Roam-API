@@ -3,6 +3,7 @@ import { ObjectType, Field } from "type-graphql";
 import { Theater } from "./Theater";
 import { Role } from "./Role";
 import { Channel } from "./Channel";
+import { Emoji } from "./Emoji";
 
 @ObjectType()
 export class Family{
@@ -27,6 +28,10 @@ export class Family{
     @Field(type => [Channel])
     @arrayProp({type: String, ref: Channel})
     channels!: Ref<Channel>[];
+
+    @Field(type => [Emoji])
+    @arrayProp({type: Emoji})
+    emojis: Emoji[];
 }
 
 export const FamilyModel = getModelForClass(Family);

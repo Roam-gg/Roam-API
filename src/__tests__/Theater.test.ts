@@ -44,6 +44,15 @@ mutation CreateTheater($data: TheaterInput!) {
             id
             name
         }
+        emojis {
+            id
+            name
+            animated
+            requireColons
+            roles {
+                id name
+            }
+        }
     }
 }
 `;
@@ -63,7 +72,6 @@ query Theater($id: String!) {
             permissions
             mentionable
         }
-
         flairs {
             id
             name
@@ -74,6 +82,16 @@ query Theater($id: String!) {
         families {
             id
             name
+        }
+        emojis {
+            id
+            name
+            requireColons
+            animated
+            roles {
+                id
+                name
+            }
         }
     }
 }
@@ -99,7 +117,12 @@ describe("Theater", () => {
             colour: faker.internet.color()
         }],
         icon: faker.random.alphaNumeric(10),
-        banner: faker.random.alphaNumeric(10)
+        banner: faker.random.alphaNumeric(10),
+        emojis: [{
+            name: faker.lorem.word(),
+            requireColons: faker.random.boolean(),
+            animated: faker.random.boolean()
+        }]
     };
     let response: ExecutionResult<ExecutionResultDataDefault>;
     it("create theater", async () => {
@@ -116,7 +139,8 @@ describe("Theater", () => {
                     flairs: theater.flairs,
                     icon: theater.icon,
                     banner: theater.banner,
-                    families: []
+                    families: [],
+                    emojis: theater.emojis
                 }
             }
         });
@@ -136,7 +160,8 @@ describe("Theater", () => {
                     flairs: theater.flairs,
                     icon: theater.icon,
                     banner: theater.banner,
-                    families: []
+                    families: [],
+                    emojis: theater.emojis
                 }
             }
         });

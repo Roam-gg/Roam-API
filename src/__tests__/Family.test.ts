@@ -38,6 +38,16 @@ mutation CreateFamily($data: FamilyInput!) {
             id
             name
         }
+        emojis {
+            id
+            name
+            animated
+            requireColons
+            roles {
+                id
+                name
+            }
+        }
     }
 }
 `;
@@ -62,6 +72,16 @@ query Family($id: String!) {
             id
             name
         }
+        emojis {
+            id
+            name
+            animated
+            requireColons
+            roles {
+                id
+                name
+            }
+        }
     }
 }
 `;
@@ -82,6 +102,11 @@ describe("Family", () => {
             colour: faker.internet.color(),
             permissions: faker.random.number(),
             mentionable: faker.random.boolean()
+        }],
+        emojis: [{
+            name: faker.lorem.word(),
+            requireColons: faker.random.boolean(),
+            animated: faker.random.boolean()
         }]
     };
     let response: ExecutionResult<ExecutionResultDataDefault>;
@@ -96,7 +121,8 @@ describe("Family", () => {
                     name: family.name,
                     channels: family.channels,
                     roles: family.roles,
-                    theaters: []
+                    theaters: [],
+                    emojis: family.emojis
                 }
             }
         });
@@ -113,7 +139,8 @@ describe("Family", () => {
                     name: family.name,
                     channels: family.channels,
                     roles: family.roles,
-                    theaters: []
+                    theaters: [],
+                    emojis: family.emojis
                 }
             }
         });

@@ -60,13 +60,13 @@ describe("Test messages", () => {
                 name: faker.lorem.word(),
                 channels: [{name: faker.lorem.word()}],
                 roles: [],
-                flairs: []
+                flairs: [],
+                emojis: []
             }}
         });
     });
 
     it("Create Message", async () => {
-        console.log(theater);
         const messageContent = faker.lorem.words();
         const message = await gCall({
             source: messageCreateMutation,

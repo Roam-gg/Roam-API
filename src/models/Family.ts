@@ -22,8 +22,8 @@ export class Family{
     theaters: Ref<Theater>[];
 
     @Field(type => [Role])
-    @arrayProp({type: Role})
-    roles!: Role[];
+    @arrayProp({type: String, ref: Role})
+    roles!: Ref<Role>[];
 
     @Field(type => [Channel])
     @arrayProp({type: String, ref: Channel})

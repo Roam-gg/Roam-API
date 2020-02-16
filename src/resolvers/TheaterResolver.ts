@@ -5,10 +5,13 @@ import _ from "lodash";
 import { ChannelModel, Channel } from "../models/Channel";
 import { DocumentType } from "@typegoose/typegoose";
 import { Role } from "../models/Role";
+import { SnowflakeService } from "../services/SnowflakeService";
 
 @Resolver(of => Theater)
 export default class TheaterResolver {
-    private id_count: number = 0;
+    constructor(
+        private readonly snowflakeService: SnowflakeService
+    ) {}
 
     @Query(returns => Theater, {nullable: true})
     async theater(@Arg("id") id: string): Promise<DocumentType<Theater>> {
@@ -28,20 +31,19 @@ export default class TheaterResolver {
     async theaterCreate(@Arg("data") theaterInput: TheaterInput): Promise<DocumentType<Theater>> {
         const channels: DocumentType<Channel>[] = [];
         for (const channelInput of theaterInput.channels) {
-            const channel = new ChannelModel({id: `urn:1:${this.newID()}`, name: channelInput.name});
-            await channel.save();
-            channels.push(channel.id);
+            channels.push(await this.snowflakeService.getSnowflake().then(id => {
+                return new ChannelModel({_id: id, name: channelInput.name});
+            }).then(channel => channel.save()));
         }
         const roles: Partial<Role>[] = [];
         for (const roleInput of theaterInput.roles) {
-            roles.push({id: `urn:1:${this.newID()}`, ...roleInput});
+            roles.push(await this.snowflakeService.getSnowflake().then(id => {return {_id: id, ...roleInput};}));
         }
-        const theater = new TheaterModel({id: `urn:1:${this.newID()}`, name: theaterInput.name, channels: channels, roles: roles});
-        return await theater.save();
-    }
-
-
-    newID() {
-        return this.id_count++;
+        return this.snowflakeService.getSnowflake().then(id => new TheaterModel({
+            _id: id,
+            name: theaterInput.name,
+            channels: channels,
+            roles: roles
+        })).then(theater => theater.save());
     }
 }

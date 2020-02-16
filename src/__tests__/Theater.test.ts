@@ -6,9 +6,12 @@ import { TheaterModel } from "../../src/models/Theater";
 import { ChannelModel } from "../../src/models/Channel";
 import { ExecutionResultDataDefault } from "graphql/execution/execute";
 import { MessageModel } from "../models/Message";
+import {Container} from "typedi";
 
 beforeAll(async () => {
     await mongoose.connect("mongodb://localhost:27017/theater_test", {useNewUrlParser: true, useUnifiedTopology: true});
+    Container.set({id: "SNOWFLAKE_URL", factory: () => "http://localhost:8080"});
+    Container.set({id: "NODE_ID", factory: () => 0});
 });
 
 afterAll(async () => {

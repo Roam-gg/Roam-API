@@ -1,12 +1,12 @@
 import { Service, Inject } from "typedi";
-import axios from 'axios';
+import axios from "axios";
 
 @Service()
 export class SnowflakeService {
-    @Inject('SNOWFLAKE_URL')
+    @Inject("SNOWFLAKE_URL")
     private readonly url: string;
 
-    @Inject('NODE_ID')
+    @Inject("NODE_ID")
     private readonly nodeId: string;
 
     async getSnowflake(): Promise<string> {

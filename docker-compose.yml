@@ -1,7 +1,7 @@
 version: "3.7"
 services:
   snowflake:
-    image: roamgg/snowflake-generator:latest
+    image: roamgg/snowflake:latest
     hostname: snowflake-0
     ports:
       - "8080:8080"

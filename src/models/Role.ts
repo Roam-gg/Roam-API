@@ -25,3 +25,5 @@ export class Role {
     @Property({required: true, default: true})
     mentionable: boolean
 }
+
+export const RoleModel = getModelForClass(Role);

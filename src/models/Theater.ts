@@ -24,8 +24,8 @@ export class Theater {
     channels!: Ref<Channel>[];
 
     @Field(type => [Role])
-    @arrayProp({type: Role})
-    roles!: Role[];
+    @arrayProp({type: String, ref: Role})
+    roles!: Ref<Role>[];
 
     @Field(type => [Flair])
     @arrayProp({type: Flair})

@@ -3,7 +3,7 @@ import { Theater, TheaterModel } from "../models/Theater";
 import { TheaterInput } from "./inputs/TheaterInput";
 import { ChannelModel, Channel } from "../models/Channel";
 import { DocumentType } from "@typegoose/typegoose";
-import { Role } from "../models/Role";
+import { Role, RoleModel } from "../models/Role";
 import { Family, FamilyModel } from "../models/Family";
 import { Flair } from "../models/Flair";
 import { Emoji } from "../models/Emoji";
@@ -22,15 +22,17 @@ export default class TheaterResolver {
 
     @FieldResolver(returns => [Channel])
     async channels(@Root() theater: DocumentType<Theater>): Promise<DocumentType<Channel>[]> {
-        const ret = await ChannelModel.find({
-            "_id": { $in: theater.channels}
-        });
-        return ret;
+        return ChannelModel.find({_id: { $in: theater.channels}});
+    }
+
+    @FieldResolver(returns => [Role])
+    async roles(@Root() theater: DocumentType<Theater>): Promise<DocumentType<Role>[]> {
+        return RoleModel.find({_id: {$in: theater.roles}});
     }
 
     @FieldResolver(returns => [Family])
     async families(@Root() theater: DocumentType<Theater>): Promise<DocumentType<Family>[]> {
-        return FamilyModel.find({"_id": {$in: theater.families}});
+        return FamilyModel.find({_id: {$in: theater.families}});
     }
 
     @Mutation(returns => Theater)
@@ -41,9 +43,11 @@ export default class TheaterResolver {
                 return new ChannelModel({_id: id, name: channelInput.name});
             }).then(channel => channel.save()));
         }
-        const roles: Partial<Role>[] = [];
+        const roles: DocumentType<Role>[] = [];
         for (const roleInput of theaterInput.roles) {
-            roles.push(await this.snowflakeService.getSnowflake().then(id => {return {_id: id, ...roleInput};}));
+            roles.push(await this.snowflakeService.getSnowflake()
+                .then(id => new RoleModel({ _id: id, ...roleInput}))
+                .then(role => role.save()));
         }
         const flairs: Partial<Flair>[] = [];
         for (const flairInput of theaterInput.flairs) {

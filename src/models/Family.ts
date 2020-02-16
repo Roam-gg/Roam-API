@@ -30,8 +30,8 @@ export class Family{
     channels!: Ref<Channel>[];
 
     @Field(type => [Emoji])
-    @arrayProp({type: String, ref: Emoji})
-    emojis: Ref<Emoji>[];
+    @arrayProp({type: Emoji})
+    emojis: Emoji[];
 }
 
 export const FamilyModel = getModelForClass(Family);

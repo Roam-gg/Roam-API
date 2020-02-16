@@ -5,6 +5,7 @@ import { Theater, TheaterModel } from "../models/Theater";
 import { ChannelModel, Channel } from "../models/Channel";
 import { FamilyInput } from "./inputs/FamilyInput";
 import { Role } from "../models/Role";
+import { Emoji } from "../models/Emoji";
 
 @Resolver(of => Family)
 export default class FamilyResolver {
@@ -36,7 +37,18 @@ export default class FamilyResolver {
         for (const roleInput of familyInput.roles) {
             roles.push({id: `urn:1:${this.newID()}`, ...roleInput});
         }
-        return new FamilyModel({id: `urn:1:${this.newID()}`, name: familyInput.name, channels: channels, roles: roles, theaters: []}).save();
+        const emojis: Partial<Emoji>[] = [];
+        for (const emojiInput of familyInput.emojis) {
+            emojis.push({id: `urn:1:${this.newID()}`, ...emojiInput, roles: []});
+        }
+        return new FamilyModel({
+            id: `urn:1:${this.newID()}`,
+            name: familyInput.name,
+            channels: channels,
+            roles: roles,
+            theaters: [],
+            emojis: emojis
+        }).save();
     }
 
     newID() {

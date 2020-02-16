@@ -6,6 +6,7 @@ import { DocumentType } from "@typegoose/typegoose";
 import { Role } from "../models/Role";
 import { Family, FamilyModel } from "../models/Family";
 import { Flair } from "../models/Flair";
+import { Emoji } from "../models/Emoji";
 
 @Resolver(of => Theater)
 export default class TheaterResolver {
@@ -45,7 +46,21 @@ export default class TheaterResolver {
         for (const flairInput of theaterInput.flairs) {
             flairs.push({id: `urn:1:${this.newID()}`, ...flairInput});
         }
-        const theater = new TheaterModel({id: `urn:1:${this.newID()}`, name: theaterInput.name, channels, roles, flairs, icon: theaterInput.icon, banner: theaterInput.banner, families: []});
+        const emojis: Partial<Emoji>[] = [];
+        for (const emojiInput of theaterInput.emojis) {
+            emojis.push({id: `urn:1:${this.newID()}`, ...emojiInput, roles: []});
+        }
+        const theater = new TheaterModel({
+            id: `urn:1:${this.newID()}`,
+            name: theaterInput.name,
+            channels,
+            roles,
+            flairs,
+            icon: theaterInput.icon,
+            banner: theaterInput.banner, 
+            families: [],
+            emojis: emojis
+        });
         return await theater.save();
     }
 

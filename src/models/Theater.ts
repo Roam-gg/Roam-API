@@ -44,8 +44,8 @@ export class Theater {
     families!: Ref<Family>[];
 
     @Field(type => [Emoji])
-    @arrayProp({type: String, ref: Emoji})
-    emojis: Ref<Emoji>[];
+    @arrayProp({type: Emoji})
+    emojis: Emoji[];
 }
 
 

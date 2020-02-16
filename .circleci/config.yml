@@ -6,6 +6,8 @@ jobs:
       - image: circleci/mongo:4.2.3
         environment:
           - MONGO_INITDB_DATABASE: test
+      - image: roamgg/snowflake:latest
+        
     steps:
       - checkout
       - restore_cache:

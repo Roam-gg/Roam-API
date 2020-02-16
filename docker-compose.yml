@@ -1,0 +1,13 @@
+version: "3.7"
+services:
+  snowflake:
+    image: roamgg/snowflake:latest
+    hostname: snowflake-0
+    ports:
+      - "8080:8080"
+    environment:
+      - EPOCH=1577836800
+  mongo:
+    image: mongo:latest
+    ports:
+      - "27017:27017"

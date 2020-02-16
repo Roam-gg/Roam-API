@@ -7,10 +7,13 @@ import { Role } from "../models/Role";
 import { Family, FamilyModel } from "../models/Family";
 import { Flair } from "../models/Flair";
 import { Emoji } from "../models/Emoji";
+import { SnowflakeService } from "../services/SnowflakeService";
 
 @Resolver(of => Theater)
 export default class TheaterResolver {
-    private id_count = 0;
+    constructor(
+        private readonly snowflakeService: SnowflakeService
+    ) {}
 
     @Query(returns => Theater, {nullable: true})
     async theater(@Arg("id") id: string): Promise<DocumentType<Theater>> {
@@ -34,24 +37,24 @@ export default class TheaterResolver {
     async theaterCreate(@Arg("data") theaterInput: TheaterInput): Promise<DocumentType<Theater>> {
         const channels: DocumentType<Channel>[] = [];
         for (const channelInput of theaterInput.channels) {
-            const channel = new ChannelModel({id: `urn:1:${this.newID()}`, name: channelInput.name});
-            await channel.save();
-            channels.push(channel.id);
+            channels.push(await this.snowflakeService.getSnowflake().then(id => {
+                return new ChannelModel({_id: id, name: channelInput.name});
+            }).then(channel => channel.save()));
         }
         const roles: Partial<Role>[] = [];
         for (const roleInput of theaterInput.roles) {
-            roles.push({id: `urn:1:${this.newID()}`, ...roleInput});
+            roles.push(await this.snowflakeService.getSnowflake().then(id => {return {_id: id, ...roleInput};}));
         }
         const flairs: Partial<Flair>[] = [];
         for (const flairInput of theaterInput.flairs) {
-            flairs.push({id: `urn:1:${this.newID()}`, ...flairInput});
+            flairs.push(await this.snowflakeService.getSnowflake().then(id => {return {_id: id, ...flairInput};}));
         }
         const emojis: Partial<Emoji>[] = [];
         for (const emojiInput of theaterInput.emojis) {
-            emojis.push({id: `urn:1:${this.newID()}`, ...emojiInput, roles: []});
+            emojis.push(await this.snowflakeService.getSnowflake().then(id => {return {_id: id, ...emojiInput, roles: []};}));
         }
-        const theater = new TheaterModel({
-            id: `urn:1:${this.newID()}`,
+        return this.snowflakeService.getSnowflake().then(id => new TheaterModel({
+            _id: id,
             name: theaterInput.name,
             channels,
             roles,
@@ -60,12 +63,6 @@ export default class TheaterResolver {
             banner: theaterInput.banner, 
             families: [],
             emojis: emojis
-        });
-        return await theater.save();
-    }
-
-
-    newID() {
-        return this.id_count++;
+        })).then(theater => theater.save());
     }
 }

@@ -6,10 +6,13 @@ import { ChannelModel, Channel } from "../models/Channel";
 import { FamilyInput } from "./inputs/FamilyInput";
 import { Role } from "../models/Role";
 import { Emoji } from "../models/Emoji";
+import { SnowflakeService } from "../services/SnowflakeService";
 
 @Resolver(of => Family)
 export default class FamilyResolver {
-    private id_count = 3000;
+    constructor(
+        private readonly snowflakeService: SnowflakeService
+    ) {}
 
     @Query(returns => Family, {nullable: true})
     async family(@Arg("id") id: string): Promise<DocumentType<Family>> {
@@ -30,28 +33,20 @@ export default class FamilyResolver {
     async familyCreate(@Arg("data") familyInput: FamilyInput): Promise<DocumentType<Family>> {
         const channels: DocumentType<Channel>[] = [];
         for (const channelInput of familyInput.channels) {
-            const channel = new ChannelModel({id: `urn:1:${this.newID()}`, name: channelInput.name});
-            channels.push(await channel.save());
+            channels.push(await this.snowflakeService.getSnowflake().then(id => {
+                return new ChannelModel({_id: id, name: channelInput.name});
+            }).then(channel => channel.save()));
         }
         const roles: Partial<Role>[] = [];
         for (const roleInput of familyInput.roles) {
-            roles.push({id: `urn:1:${this.newID()}`, ...roleInput});
+            roles.push(await this.snowflakeService.getSnowflake().then(id => {return {id: id, ...roleInput};}));
         }
         const emojis: Partial<Emoji>[] = [];
         for (const emojiInput of familyInput.emojis) {
-            emojis.push({id: `urn:1:${this.newID()}`, ...emojiInput, roles: []});
+            emojis.push(await this.snowflakeService.getSnowflake().then(id => {return {id: id, ...emojiInput};}));
         }
-        return new FamilyModel({
-            id: `urn:1:${this.newID()}`,
-            name: familyInput.name,
-            channels: channels,
-            roles: roles,
-            theaters: [],
-            emojis: emojis
-        }).save();
-    }
-
-    newID() {
-        return this.id_count++;
+        return this.snowflakeService.getSnowflake().then(id => new FamilyModel({
+            id, name: familyInput.name, channels, roles, emojis, theaters: []
+        })).then(family => family.save());
     }
 }

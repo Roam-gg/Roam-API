@@ -62,7 +62,7 @@
   "dependencies": {
     "@typegoose/typegoose": "^6.3.2",
     "apollo-server": "^2.10.0",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "lodash": "^4.17.15",
     "mongodb": "^3.5.2",
     "mongoose": "^5.8.11",
